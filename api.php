@@ -41,20 +41,17 @@
     /*This function accepts a JSON formated string of 500 numbers and posts to the database*/
     function writetoDB($listName,$nums)
     {
-
         $con = connect();
         $sql = "INSERT INTO posts (listName, nums)
         VALUES ('$listName', '$nums');";
-        
-        
+          
         $post = json_decode($nums, TRUE);
         $nums2 = $post['nums'];
         if ($nums2[499] == NULL){
 		echo "      Please enter 500 numbers";
 		break;
         }
-        else{
-            
+        else{ 
         	if( mysqli_query($con, $sql)){
             		echo "Record created Succesfully";
            	}
@@ -86,8 +83,7 @@
                     	writetoDB($nameofList,$inputnums);
                     }
                     else
-                    echo "Please enter a 'listName' and your 'nums' string";
-                    
+                    	echo "Please enter a 'listName' and your 'nums' string";
                     break;
         default:
     }
