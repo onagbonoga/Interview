@@ -32,7 +32,6 @@
            echo "Error " .$sql . "<br>" .mysqli_error($con);
        }
         $jsonResult = mysqli_fetch_assoc($result);
-        //print_r($jsonResult);
         $post = json_decode($jsonResult['nums'], TRUE);
         $nums = $post['nums'];
         sort($nums);
@@ -51,16 +50,17 @@
         $post = json_decode($nums, TRUE);
         $nums2 = $post['nums'];
         if ($nums2[499] == NULL){
-            echo "      Please enter 500 numbers";
+		echo "      Please enter 500 numbers";
+		break;
         }
         else{
-            //echo "      complete";
-        if( mysqli_query($con, $sql)){
-            echo "Record created Succesfully";
-           }
-        else{
-            echo "Error " .$sql . "<br>" .mysqli_error($con);
-           }
+            
+        	if( mysqli_query($con, $sql)){
+            		echo "Record created Succesfully";
+           	}
+        	else{
+            		echo "Error " .$sql . "<br>" .mysqli_error($con);
+           	}
         }
         mysqli_close($con);
     }
@@ -69,26 +69,25 @@
     /*This switch statement is responds to the html requests that come through*/
     switch($_SERVER['REQUEST_METHOD'])
     {
-        case 'GET': $the_request = &$_GET; 
-                    echo "GET works";
+        case 'GET': 
                     $listName = $_GET["listName"];
                     echo nl2br("\r\n");
                     echo $listName;
                     $apiresponse = readsortedfromDB($listName);
                     if($apiresponse == NULL)
-                    echo "         List does not exist";
+                    	echo "         List does not exist";
                     else
-                    print_r($apiresponse);
+                    	print_r($apiresponse);
                     break;
-        case 'POST': $the_request = &$_POST; 
+        case 'POST':  
                     if(isset($_POST["listName"]) && isset($_POST["nums"])){
-                    echo "Post works";
+                    	$nameofList = $_POST['listName'];
+                    	$inputnums = $_POST['nums'];
+                    	writetoDB($nameofList,$inputnums);
                     }
                     else
                     echo "Please enter a 'listName' and your 'nums' string";
-                    $nameofList = $_POST['listName'];
-                    $inputnums = $_POST['nums'];
-                    writetoDB($nameofList,$inputnums);
+                    
                     break;
         default:
     }
